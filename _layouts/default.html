@@ -1,0 +1,40 @@
+<!doctype html>
+<html class="no-js" lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>MOINTE Code Guide</title>
+        <meta name="description" content="MOINTE CODE GUIDE">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+        <link rel="stylesheet" href="/code-guide/assets/css/normalize.css">
+        <link rel="stylesheet" href="/code-guide/assets/css/main.css">
+        <link rel="stylesheet" href="/code-guide/assets/css/fold.css">
+        <link rel="stylesheet" href="/code-guide/assets/css/code-guide.css">
+        <link rel="stylesheet" href="/code-guide/assets/css/app.css">
+        <script src="/code-guide/assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        {% include header.html %}
+    
+        <!-- .cd-folding-panel -->
+        {{ content }} 
+
+        {% include footer.html %} 
+
+        <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/code-guide/assets/js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+        <script src="/code-guide/assets/js/plugins.js"></script>
+        <script src="/code-guide/assets/js/fold.js"></script>
+        <script src="/code-guide/assets/js/main.js"></script>
+
+    </body>
+</html>

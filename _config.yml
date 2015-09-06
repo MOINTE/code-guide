@@ -1,0 +1,7 @@
+name:          编程规范 by @MOINTE
+description:   Standards for developing flexible, durable, and sustainable software
+url:           https://github.com/MOINTE/code-guide
+
+markdown:      rdiscount
+permalink:     pretty
+pygments:      true

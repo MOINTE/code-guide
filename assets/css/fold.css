@@ -1,0 +1,693 @@
+---
+layout: nil
+---
+
+/*
+ * Patterns - reusable parts of our design
+ */
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+/*
+ * Main Content
+ */
+.cd-main {
+    overflow-x: hidden;
+}
+
+.cd-main::before {
+    /* never visible - this is used in jQuery to check the current MQ */
+    display: none;
+
+    content: 'mobile';
+}
+
+.cd-main > * {
+    -webkit-transition: -webkit-transform .5s .4s;
+       -moz-transition:    -moz-transform .5s .4s;
+            transition:         transform .5s .4s;
+}
+
+.cd-main.fold-is-open > * {
+    -webkit-transition: -webkit-transform .5s 0s;
+       -moz-transition:    -moz-transform .5s 0s;
+            transition:         transform .5s 0s;
+    /* on mobile - translate .cd-main content to the right when the .cd-folding-panel is open */
+    -webkit-transform: translateX(100%);
+       -moz-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+         -o-transform: translateX(100%);
+            transform: translateX(100%);
+}
+
+@media only screen and (min-width:600px) {
+    .cd-main.fold-is-open > * {
+        -webkit-transform: translateX(600px);
+           -moz-transform: translateX(600px);
+            -ms-transform: translateX(600px);
+             -o-transform: translateX(600px);
+                transform: translateX(600px);
+    }
+}
+
+@media only screen and (min-width:1100px) {
+    .cd-main::before {
+        /* never visible - this is used in jQuery to check the current MQ */
+        content: 'desktop';
+    }
+
+    .cd-main.fold-is-open > * {
+        /* reset style - on bigger devices we translate the gallery items */
+        -webkit-transform: translateX(0);
+           -moz-transform: translateX(0);
+            -ms-transform: translateX(0);
+             -o-transform: translateX(0);
+                transform: translateX(0);
+    }
+}
+
+.cd-gallery {
+    margin: 0;
+    padding: 0;
+
+    list-style-type: none;
+}
+
+.cd-gallery::after {
+    display: table;
+    clear: both;
+
+    content: '';
+}
+
+/* this is the dark layer covering the .cd-gallery when the .cd-folding-panel is open */
+.cd-gallery::before {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+
+    display: block;
+    visibility: hidden;
+
+    width: 100%;
+    height: 100%;
+
+    content: '';
+    -webkit-transition: opacity .5s .4s, visibility 0s .9s;
+       -moz-transition: opacity .5s .4s, visibility 0s .9s;
+            transition: opacity .5s .4s, visibility 0s .9s;
+
+    opacity: 0;
+    background-color: rgba(28, 23, 38, .6);
+}
+
+/* show the dark layer when the .cd-folding-panel is open */
+.fold-is-open .cd-gallery::before {
+    visibility: visible;
+
+    -webkit-transition: opacity .5s 0s, visibility 0s 0s;
+       -moz-transition: opacity .5s 0s, visibility 0s 0s;
+            transition: opacity .5s 0s, visibility 0s 0s;
+
+    opacity: 1;
+}
+
+.cd-item {
+    width: 100%;
+    height: 300px;
+    margin: 0;
+
+    -webkit-transition: -webkit-transform .5s .4s;
+       -moz-transition:    -moz-transform .5s .4s;
+            transition:         transform .5s .4s;
+    /* Force Hardware Acceleration */
+    -webkit-transform: translateZ(0);
+       -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+         -o-transform: translateZ(0);
+            transform: translateZ(0);
+    text-align: center;
+
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+}
+
+.cd-item > a {
+    display: table;
+    overflow: hidden;
+
+    width: 100%;
+    height: 100%;
+
+    color: #fff;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.cd-item > a.dark-text {
+    color: #363558;
+}
+
+.cd-item > a.dark-text b {
+    border-color: #363558;
+}
+
+.cd-item div {
+    display: table-cell;
+
+    vertical-align: middle;
+}
+
+/* set background-color for top-four .cd-item */
+.cd-item:nth-of-type(1) {
+    background-color: #363558;
+}
+
+.cd-item:nth-of-type(2) {
+    background-color: #544173;
+}
+
+.cd-item:nth-of-type(3) {
+    background-color: #dadcdc;
+}
+
+.cd-item:nth-of-type(4) {
+    background-color: #65d29b;
+}
+
+
+/* item title */
+.cd-item h2 {
+    font-size: 2.2rem;
+}
+
+
+/* intro p */
+.cd-item p {
+    font-size: 1.4rem;
+    line-height: 1.2;
+
+    padding: 1em 0;
+
+    opacity: .6;
+}
+
+/* view more */
+.cd-item b {
+    font-size: 1rem;
+    font-weight: bold;
+
+    display: inline-block;
+
+    padding: .5em 1.3em;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    border: 1px solid #fff;
+    border-radius: 50em;
+}
+
+@media only screen and (min-width:1100px) {
+    .cd-item {
+        float: left;
+
+        width: 50%;
+        height: 520px;
+
+        -webkit-transition: -webkit-transform .5s .4s;
+           -moz-transition:    -moz-transform .5s .4s;
+                transition:         transform .5s .4s;
+    }
+
+    .cd-item h2 {
+        font-size: 2rem;
+    }
+
+    .cd-item p {
+        font-size: 1.6rem;
+    }
+
+
+    /* move up item title and intro to show view more link */
+    .cd-item h2,
+    .cd-item p {
+        -webkit-transition: -webkit-transform .3s .1s;
+           -moz-transition:    -moz-transform .3s .1s;
+                transition:         transform .3s .1s;
+        -webkit-transform: translateY(30px);
+           -moz-transform: translateY(30px);
+            -ms-transform: translateY(30px);
+             -o-transform: translateY(30px);
+                transform: translateY(30px);
+    }
+
+    .cd-item b {
+        -webkit-transition: opacity .3s 0s, -webkit-transform .3s 0s;
+           -moz-transition: opacity .3s 0s, -moz-transform .3s 0s;
+                transition: opacity .3s 0s, transform .3s 0s;
+        -webkit-transform: translateY(20px);
+           -moz-transform: translateY(20px);
+            -ms-transform: translateY(20px);
+             -o-transform: translateY(20px);
+                transform: translateY(20px);
+
+        opacity: 0;
+    }
+
+    .no-touch .cd-item a:hover h2,
+    .no-touch .cd-item a:hover p {
+        -webkit-transition: -webkit-transform .3s 0s;
+           -moz-transition:    -moz-transform .3s 0s;
+                transition:         transform .3s 0s;
+        -webkit-transform: translateY(0);
+           -moz-transform: translateY(0);
+            -ms-transform: translateY(0);
+             -o-transform: translateY(0);
+                transform: translateY(0);
+    }
+
+    .no-touch .cd-item a:hover b {
+        -webkit-transition: opacity .3s .1s, -webkit-transform .3s .1s;
+           -moz-transition: opacity .3s .1s, -moz-transform .3s .1s;
+                transition: opacity .3s .1s, transform .3s .1s;
+        -webkit-transform: translateY(0);
+           -moz-transform: translateY(0);
+            -ms-transform: translateY(0);
+             -o-transform: translateY(0);
+                transform: translateY(0);
+
+        opacity: 1;
+    }
+
+
+    /* translate x and y when .fold-is-open */
+    .fold-is-open .cd-item {
+        -webkit-transition: -webkit-transform .5s 0s;
+           -moz-transition:    -moz-transform .5s 0s;
+                transition:         transform .5s 0s;
+        -webkit-transform: translateX(-400px);
+           -moz-transform: translateX(-400px);
+            -ms-transform: translateX(-400px);
+             -o-transform: translateX(-400px);
+                transform: translateX(-400px);
+    }
+
+    .fold-is-open .cd-item:nth-of-type(2n) {
+        -webkit-transform: translateX(400px);
+           -moz-transform: translateX(400px);
+            -ms-transform: translateX(400px);
+             -o-transform: translateX(400px);
+                transform: translateX(400px);
+    }
+}
+
+
+/*
+ * folding panel
+ */
+
+.cd-folding-panel {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+
+    visibility: hidden;
+    overflow: hidden;
+
+    width: 100%;
+    height: 100vh;
+
+    -webkit-transition: visibility 0s .9s;
+       -moz-transition: visibility 0s .9s;
+            transition: visibility 0s .9s;
+}
+
+.cd-folding-panel .fold-left,
+.cd-folding-panel .fold-right {
+    position: relative;
+
+    overflow: hidden;
+    /* the :after elements of .fold-left and .fold-right are the 2 fold sides */
+
+    width: 100%;
+    height: 100vh;
+    /* enable a 3D-space for children elements */
+
+    -webkit-perspective: 2000px;
+       -moz-perspective: 2000px;
+            perspective: 2000px;
+}
+
+.cd-folding-panel .fold-left::after,
+.cd-folding-panel .fold-right::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+    /* 2 fold sides */
+
+    content: '';
+    -webkit-transition: -webkit-transform .5s .4s, background-color .5s .4s;
+       -moz-transition:    -moz-transform .5s .4s, background-color .5s .4s;
+            transition:         transform .5s .4s, background-color .5s .4s;
+    /* Force Hardware Acceleration */
+    -webkit-transform: translateZ(0);
+       -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+         -o-transform: translateZ(0);
+            transform: translateZ(0);
+
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+}
+
+.cd-folding-panel .fold-right {
+    -webkit-perspective-origin: 0 50%;
+       -moz-perspective-origin: 0 50%;
+            perspective-origin: 0 50%;
+}
+
+.cd-folding-panel .fold-right::after {
+    -webkit-transform: translateX(-100%) rotateY(-90deg);
+       -moz-transform: translateX(-100%) rotateY(-90deg);
+        -ms-transform: translateX(-100%) rotateY(-90deg);
+         -o-transform: translateX(-100%) rotateY(-90deg);
+            transform: translateX(-100%) rotateY(-90deg);
+    -webkit-transform-origin: right center;
+       -moz-transform-origin: right center;
+        -ms-transform-origin: right center;
+         -o-transform-origin: right center;
+            transform-origin: right center;
+
+    background-color: #c0c3c3;
+}
+
+.cd-folding-panel .fold-left {
+    /* on mobile only the right fold side is visible */
+    display: none;
+}
+
+.cd-folding-panel .fold-left::after {
+    background-color: #f9fafa;
+}
+
+.cd-folding-panel .cd-close {
+    /* 'X' close icon */
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    right: 10px;
+
+    display: inline-block;
+    /* image replacement */
+    overflow: hidden;
+
+    width: 44px;
+    height: 44px;
+
+    -webkit-transition: opacity .2s 0s;
+       -moz-transition: opacity .2s 0s;
+            transition: opacity .2s 0s;
+    white-space: nowrap;
+    text-indent: 100%;
+
+    opacity: 0;
+}
+
+.cd-folding-panel .cd-close::after,
+.cd-folding-panel .cd-close::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 32px;
+    height: 3px;
+    /* lines of 'X' icon */
+
+    content: '';
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+            transition: opacity .2s;
+
+    background-color: #544173;
+
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+}
+
+.cd-folding-panel .cd-close::after {
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+       -moz-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+        -ms-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+         -o-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+            transform: translateX(-50%) translateY(-50%) rotate(45deg);
+}
+
+.cd-folding-panel .cd-close::before {
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+       -moz-transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+        -ms-transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+         -o-transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+            transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+}
+
+.cd-folding-panel.is-open {
+    visibility: visible;
+
+    -webkit-transition: visibility 0s 0s;
+       -moz-transition: visibility 0s 0s;
+            transition: visibility 0s 0s;
+}
+
+.cd-folding-panel.is-open .fold-right::after,
+.cd-folding-panel.is-open .fold-left::after {
+    -webkit-transition: -webkit-transform .5s 0s, background-color .5s 0s;
+       -moz-transition:    -moz-transform .5s 0s, background-color .5s 0s;
+            transition:         transform .5s 0s, background-color .5s 0s;
+    -webkit-transform: translateX(0);
+       -moz-transform: translateX(0);
+        -ms-transform: translateX(0);
+         -o-transform: translateX(0);
+            transform: translateX(0);
+}
+
+.cd-folding-panel.is-open .fold-right::after {
+    background-color: #f9fafa;
+}
+
+.cd-folding-panel.is-open .cd-close {
+    -webkit-transition: opacity .2s .5s;
+       -moz-transition: opacity .2s .5s;
+            transition: opacity .2s .5s;
+
+    opacity: 1;
+}
+
+@media only screen and (min-width:600px) {
+    .cd-folding-panel {
+        width: 600px;
+    }
+}
+
+@media only screen and (min-width:1100px) {
+    .cd-folding-panel {
+        right: auto;
+        left: 50%;
+
+        width: 60%;
+        /* center .cd-folding-panel */
+
+        -webkit-transform: translateX(-50%);
+           -moz-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+             -o-transform: translateX(-50%);
+                transform: translateX(-50%);
+    }
+
+    .cd-folding-panel .fold-left,
+    .cd-folding-panel .fold-right {
+        float: left;
+
+        width: 50%;
+        height: 100%;
+    }
+
+    .cd-folding-panel .fold-right {
+        /* change perspective-origin so that the 2 fold sides have the same vanishing point */
+        -webkit-perspective-origin: 0 50%;
+           -moz-perspective-origin: 0 50%;
+                perspective-origin: 0 50%;
+    }
+
+    .cd-folding-panel .fold-right::after {
+        -webkit-transform: translateX(-100%) rotateY(-90deg);
+           -moz-transform: translateX(-100%) rotateY(-90deg);
+            -ms-transform: translateX(-100%) rotateY(-90deg);
+             -o-transform: translateX(-100%) rotateY(-90deg);
+                transform: translateX(-100%) rotateY(-90deg);
+        -webkit-transform-origin: right center;
+           -moz-transform-origin: right center;
+            -ms-transform-origin: right center;
+             -o-transform-origin: right center;
+                transform-origin: right center;
+    }
+
+    .cd-folding-panel .fold-left {
+        display: block;
+        /* change perspective-origin so that the 2 fold sides have the same vanishing point */
+
+        -webkit-perspective-origin: 100% 50%;
+           -moz-perspective-origin: 100% 50%;
+                perspective-origin: 100% 50%;
+    }
+
+    .cd-folding-panel .fold-left::after {
+        -webkit-transform: translateX(100%) rotateY(90deg);
+           -moz-transform: translateX(100%) rotateY(90deg);
+            -ms-transform: translateX(100%) rotateY(90deg);
+             -o-transform: translateX(100%) rotateY(90deg);
+                transform: translateX(100%) rotateY(90deg);
+        -webkit-transform-origin: left center;
+           -moz-transform-origin: left center;
+            -ms-transform-origin: left center;
+             -o-transform-origin: left center;
+                transform-origin: left center;
+    }
+}
+
+.cd-fold-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    visibility: hidden;
+
+    width: 100%;
+    height: 100%;
+
+    -webkit-transition: visibility 0s .4s;
+       -moz-transition: visibility 0s .4s;
+            transition: visibility 0s .4s;
+
+    background-color: #fff;
+}
+
+.cd-fold-content > * {
+    -webkit-transform: translateY(20px);
+       -moz-transform: translateY(20px);
+        -ms-transform: translateY(20px);
+         -o-transform: translateY(20px);
+            transform: translateY(20px);
+
+    opacity: 0;
+}
+
+/* heading transition when close fold content */
+.cd-fold-content .heading {
+    -webkit-transition: -webkit-transform .2s .2s, opacity .2s .2s;
+       -moz-transition:    -moz-transform .2s .2s, opacity .2s .2s;
+            transition:         transform .2s .2s, opacity .2s .2s;
+}
+
+/* rules nav transition when close fold content */
+.cd-fold-content .toc {
+    -webkit-transition: -webkit-transform .2s .1s, opacity .2s .1s;
+       -moz-transition:    -moz-transform .2s .1s, opacity .2s .1s;
+            transition:         transform .2s .1s, opacity .2s .1s;
+}
+
+/* rules transition when close fold content */
+.cd-fold-content .section .col {
+    -webkit-transition: -webkit-transform .2s 0s, opacity .2s 0s;
+       -moz-transition:    -moz-transform .2s 0s, opacity .2s 0s;
+            transition:         transform .2s 0s, opacity .2s 0s;
+}
+
+.is-open .cd-fold-content {
+    visibility: visible;
+    overflow-y: auto;
+
+    -webkit-transition: visibility 0s .5s;
+       -moz-transition: visibility 0s .5s;
+            transition: visibility 0s .5s;
+
+    background-color: #fff;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+.is-open .cd-fold-content > * {
+    -webkit-transform: translateY(0);
+       -moz-transform: translateY(0);
+        -ms-transform: translateY(0);
+         -o-transform: translateY(0);
+            transform: translateY(0);
+
+    opacity: 1;
+}
+
+/* heading transition when fold content is open */
+.is-open .cd-fold-content .heading {
+    -webkit-transition: -webkit-transform .2s .5s, opacity .2s .5s;
+       -moz-transition:    -moz-transform .2s .5s, opacity .2s .5s;
+            transition:         transform .2s .5s, opacity .2s .5s;
+}
+
+/* rules nav transition when fold content is open */
+.is-open .cd-fold-content .toc {
+    -webkit-transition: -webkit-transform .2s .6s, opacity .2s .6s;
+       -moz-transition:    -moz-transform .2s .6s, opacity .2s .6s;
+            transition:         transform .2s .6s, opacity .2s .6s;
+}
+
+/* rules transition when fold content is open */
+.is-open .cd-fold-content .section .col {
+    -webkit-transition: -webkit-transform .2s .7s, opacity .2s .7s;
+       -moz-transition:    -moz-transform .2s .7s, opacity .2s .7s;
+            transition:         transform .2s .7s, opacity .2s .7s;
+}
+
+@media only screen and (min-width:1100px) {
+    .cd-fold-content > * {
+        -webkit-transform: translateY(40px);
+           -moz-transform: translateY(40px);
+            -ms-transform: translateY(40px);
+             -o-transform: translateY(40px);
+                transform: translateY(40px);
+    }
+}
+
+
+
+
+/*
+ * Javascript disabled
+ */
+
+.no-js .cd-fold-content.single-page {
+    position: static;
+
+    visibility: visible;
+
+    height: auto;
+
+    background-color: #dadcdc;
+}
+
+.no-js .cd-fold-content.single-page > * {
+    -webkit-transform: translateY(0);
+       -moz-transform: translateY(0);
+        -ms-transform: translateY(0);
+         -o-transform: translateY(0);
+            transform: translateY(0);
+
+    opacity: 1;
+}
